@@ -1,5 +1,6 @@
 #!/bin/python3
-
+from collections import deque
+import copy
 
 def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     '''
@@ -28,6 +29,29 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     Whenever it is impossible to generate a word ladder between the two words,
     the function returns `None`.
     '''
+    
+    d = open(dictionary_file)
+    words = d.read()
+    words = words.split('\n')
+
+    ls = [start_word]
+    qu = deque()
+    qu.append(ls)
+
+    if start_word == end_word:
+        return [start_word]
+    else:
+        while len(qu) != 0:
+            w = qu.popleft()
+            for i in words:
+                if _adjacent(w[-1],i):
+                    if i == end_word:
+                        w.append(i)
+                        return w
+                    ls_copy = copy.deepcopy(w)
+                    ls_copy.append(i)
+                    qu.append(ls_copy)
+                    words.remove(i)
 
 
 def verify_word_ladder(ladder):
@@ -40,6 +64,14 @@ def verify_word_ladder(ladder):
     >>> verify_word_ladder(['stone', 'shone', 'phony'])
     False
     '''
+    if ladder == []:
+        return False
+    b = True
+    for i in range(len(ladder)-1):
+        b = _adjacent(ladder[i],ladder[i+1])
+        if not b:
+            return False
+    return b
 
 
 def _adjacent(word1, word2):
@@ -52,3 +84,17 @@ def _adjacent(word1, word2):
     >>> _adjacent('stone','money')
     False
     '''
+    if len(word1) != len(word2):
+        return False
+
+    dif = 0
+
+    for i in range(len(word1)):
+            if word1[i] != word2[i]:
+                dif += 1
+    if dif == 1:
+        return True
+    else:
+        return False
+
+print("word_ladder('child','babes')=",word_ladder('child','babes'))
