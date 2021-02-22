@@ -2,6 +2,7 @@
 from collections import deque
 import copy
 
+
 def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     '''
     Returns a list satisfying the following properties:
@@ -17,19 +18,21 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
     ```
     may give the output
     ```
-    ['stone', 'shone', 'phone', 'phony', 'peony', 'penny', 'benny', 'bonny', 'boney', 'money']
+    ['stone', 'shone', 'phone', 'phony', 'peony', 'penny',
+    'benny', 'bonny', 'boney', 'money']
     ```
     but the possible outputs are not unique,
     so you may also get the output
     ```
-    ['stone', 'shone', 'shote', 'shots', 'soots', 'hoots', 'hooty', 'hooey', 'honey', 'money']
+    ['stone', 'shone', 'shote', 'shots', 'soots', 'hoots', 'hooty',
+    'hooey', 'honey', 'money']
     ```
     (We cannot use doctests here because the outputs are not unique.)
 
     Whenever it is impossible to generate a word ladder between the two words,
     the function returns `None`.
     '''
-    
+
     d = open(dictionary_file)
     words = d.read()
     words = words.split('\n')
@@ -44,7 +47,7 @@ def word_ladder(start_word, end_word, dictionary_file='words5.dict'):
         while len(qu) != 0:
             w = qu.popleft()
             for i in words:
-                if _adjacent(w[-1],i):
+                if _adjacent(w[-1], i):
                     if i == end_word:
                         w.append(i)
                         return w
@@ -68,7 +71,7 @@ def verify_word_ladder(ladder):
         return False
     b = True
     for i in range(len(ladder)-1):
-        b = _adjacent(ladder[i],ladder[i+1])
+        b = _adjacent(ladder[i], ladder[i+1])
         if not b:
             return False
     return b
@@ -96,5 +99,3 @@ def _adjacent(word1, word2):
         return True
     else:
         return False
-
-print("word_ladder('child','babes')=",word_ladder('child','babes'))
